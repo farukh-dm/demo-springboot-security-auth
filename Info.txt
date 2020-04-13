@@ -1,0 +1,102 @@
+Spring Security:
+---------------
+
+Authentication: Who are you
+Authorization: What do you want? What can you do? What are you allowed to do?
+Principal : Current User, Logged-in user . Once you authenticate, you are principal for the app to remember you.
+Granted Authority : Permissions for Principal. Fine grained permission
+Role: Group of authorities that can be applied. Coarse grained/grouping of permissions
+
+Works using filter to intercept requests.
+
+Defaults:
+Adds a login page
+Validates all the requests & handles error.
+Also create default username (user) & pwd (Using generated security pwd)
+
+Update default user using Property file.
+spring.security.user.name=__
+spring.security.user.password=__
+
+-----------------------------------
+
+	AUTHENTICATION
+
+  - Create a custom class to use security configuration by implementing WebSecurityConfigurerAdapter
+  - use annotation @EnableWebSecurity
+	
+	@EnableWebSecurity
+	public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
+	....
+	
+ - override configure(AuthenticationManagerBuilder auth) for authentication.
+ 
+ -  // Something spring security expects, to decode password provided as input & then verify
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	AUTHORIZATION
+	
+ - Using object of HttpSecurity: Lets you configure paths(url) & access restrictions for those paths.
+ 
+ - Override configure(HttpSecurity http) for authorization.
+ 				
+ 
+ *********************************************************
+ 	FILTER
+ 
+ SpringSecurityFilterChain filter for all URLs(/*)
+ 
+ Spring boot has defaults for Spring Security 
+ 				
+ 				Spring Security
+  				-------------
+ 				|			|
+ 				|			|
+ Requests 	-> 	|  Filters  |	-> 	Web App	
+  				|			|
+  				|			|
+  				-------------
+
+-----------------------------------------------------
+
+	AUTHENTICATION OBJECT
+	
+ Spring Security keeps track of both input(credentials) and Principal(Current User) in Authentication Object.
+ 
+ 		INPUT														OUTPUT
+  -------------------------									  -------------------------	
+  | Authentication Object |								      | Authentication Object |
+  |-----------------------|									  |-----------------------|		
+  | Username & pwd 		  |  -> authenticate()	-> returns -> |		Principal		  |	
+  |						  |									  |						  |
+  -------------------------									  -------------------------	 
+  
+  
+  and then Spring Security holds on to the Principal/currently logged-in user for (in security context) for subsequent requests verification.
+  
+  																|------------------------|				 |--------------------|	
+			|----------------|									| AuthenticationProvider |   ------->	 |					  |
+|--------|  | AUTHENTICATION |									| authenticate()		 |       		 | UserDetailsService |
+|        |  | OBJECT         |		|----------------|          | supports()			 |   <-------    | loadByUserName()   |
+|   	 |  |----------------|		|				 | -------> |                        |   UserDetails |					  | 					  |
+|        |  (Input Credentials)		| AUTHENTICATION |			|------------------------|	 Object      |--------------------|
+|        |  ------------------>     | MANAGER     	 |			
+| Auth   |                          | 				 |
+| Filter |	Principal / (Output)    | authenticate() |
+|        |  <-------------------	| 				 |
+|        |  |----------------|		|----------------|		
+|        |  | AUTHENTICATION |				
+|--------|  | OBJECT         |				
+ 			|----------------|
+ 			
+ In case of validation failure, AuthenticationProvider throws an exception. The exception bubbles all the way to the filter.
+ 
+ **
+ After successful validation, the Auth Object is set into Security Context in the Thread Local Object for subsequent use.
+ This Auth Object is associated to a session (using Filter), so that we don't authenticate with subsequent requests.
+ For subsequent requests, this filter will take auth Object from session & save it to thread local again, so that it's available for the request.
+ 
+ 
