@@ -55,7 +55,7 @@ spring.security.user.password=__
   				-------------
  				|			|
  				|			|
- Requests 	-> 	|  Filters  |	-> 	Web App	
+ Requests 	-> 		|  Filters 		|	-> 	Web App	
   				|			|
   				|			|
   				-------------
@@ -66,16 +66,16 @@ spring.security.user.password=__
 	
  Spring Security keeps track of both input(credentials) and Principal(Current User) in Authentication Object.
  
- 		INPUT														OUTPUT
+ 	INPUT												OUTPUT
   -------------------------									  -------------------------	
-  | Authentication Object |								      | Authentication Object |
+  | Authentication Object |								          | Authentication Object |
   |-----------------------|									  |-----------------------|		
-  | Username & pwd 		  |  -> authenticate()	-> returns -> |		Principal		  |	
-  |						  |									  |						  |
+  | Username & pwd 	  |  -> authenticate()	-> returns -> |		Principal		  |	
+  |			  |									  |			  |
   -------------------------									  -------------------------	 
   
   
-  and then Spring Security holds on to the Principal/currently logged-in user for (in security context) for subsequent requests verification.
+ and then Spring Security holds on to the Principal/currently logged-in user for (in security context) for subsequent requests verification.
   
   																|------------------------|				 |--------------------|	
 			|----------------|									| AuthenticationProvider |   ------->	 |					  |
