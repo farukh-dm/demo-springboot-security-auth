@@ -18,9 +18,9 @@ Update default user using Property file.
 spring.security.user.name=__
 spring.security.user.password=__
 
------------------------------------
+_________________________________
 
-	AUTHENTICATION
+AUTHENTICATION
 
   - Create a custom class to use security configuration by implementing WebSecurityConfigurerAdapter
   - use annotation @EnableWebSecurity
@@ -37,7 +37,7 @@ spring.security.user.password=__
 		return NoOpPasswordEncoder.getInstance();
 	}
 	
-	AUTHORIZATION
+AUTHORIZATION
 	
  - Using object of HttpSecurity: Lets you configure paths(url) & access restrictions for those paths.
  
@@ -45,26 +45,26 @@ spring.security.user.password=__
  				
  
  *********************************************************
- 	FILTER
+ FILTER
  
  SpringSecurityFilterChain filter for all URLs(/*)
  
  Spring boot has defaults for Spring Security 
  				
- 				Spring Security
-  				-------------
- 				|			|
- 				|			|
- Requests 	-> 	|  Filters  |	-> 	Web App	
-  				|			|
-  				|			|
-  				-------------
+ 			Spring Security
+  			_____________
+ 			\	    \	
+ 			\	    \
+ Requests 	-> 	\  Filters  \	-> 	Web App	
+  			\	    \
+  			\	    \
+  			_____________
 
------------------------------------------------------
 
-	AUTHENTICATION OBJECT
+
+AUTHENTICATION OBJECT
 	
- Spring Security keeps track of both input(credentials) and Principal(Current User) in Authentication Object.
+Spring Security keeps track of both input(credentials) and Principal(Current User) in Authentication Object.
  
  		INPUT														OUTPUT
   -------------------------									  -------------------------	
